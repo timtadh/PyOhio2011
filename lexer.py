@@ -12,6 +12,8 @@ TOKENSR = (
 TOKENS = dict((k, k) for i, k in enumerate(TOKENSR))
 sys.modules[__name__].__dict__.update(TOKENS)
 
+# This simple token class should be largely compatible with the one in PLY
+# although I haven't tested that. I simply assume it is true...
 class token(object):
     def __init__(self, type, value):
         self.type = type

@@ -61,11 +61,10 @@ class Parser(BaseParser):
 parse = Parser(lx.Lex).parse
 
 if __name__ == '__main__':
-    print Parser.tokens
     parser = Parser(lx.Lex, debug=True)
     def test(expr):
         p = parser.parse(expr)
         assert eval(expr) == p
         print p
-    #print parser.parse('7*4*3')
+    print parse('7*4*3')
     test('9*4/(4*2+4)*6/8')
