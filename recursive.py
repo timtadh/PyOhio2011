@@ -15,7 +15,7 @@ def parse(s):
 
     ## ## ## ## ## ## START EXPRESSION EVALUATOR ## ## ## ## ## ##
     def evalop(op, a, b):
-        #return op, a, b
+        print 'evalop>', op, a, b
         if op == '+': return a + b
         if op == '-': return a - b
         if op == '*': return a * b
@@ -26,10 +26,11 @@ def parse(s):
         print 'collapse>', a, b
         if b is not None:
             a = evalop(b[0], a, b[1])
-            print ' '*4, a
+            print ' '*4, 'evalop result>', a
             if len(b) == 3:
                 print ' '*4, b[2]
                 return collapse(a, b[2])
+        print ' '*4, 'collapse result>', a
         return a
 
     def accumulate(op, b, extra):
@@ -44,14 +45,34 @@ def parse(s):
 
     ## ## ## ## ## ## START PARSER ## ## ## ## ## ##
 
+    #      #      #      #      #      #      #      #      #      #      #
+    #
     # Notes on the construction of the parser.
+    #
+    # Each function models a production of the formal grammar of the
+    # language as found in grammar.md. The signature of the each
+    # function is the same ie.
+    #
+    #     def ProductionName(i): returns i_out, r
+    #         @i = the index of the next token to consider (before the
+    #              production has been processed).
+    #         @i_out = the index of the next token to consider (after
+    #                  the production has been processed) its value
+    #                  reflects the input consumed by the production.
+    #         @r = the return value to be passed to the parent.
+    #
+    # This parser does not produce an AST or any intermediate language.
+    # Instead, it evaluates the language in place a produces the result
+    # of the arithmetic expression. It is not necessary to understand
+    # this process, but the interested can read the code contained in
+    # `evalop`, `collapse`, and `accumulate`.
+    #
+    #      #      #      #      #      #      #      #      #      #      #
 
     def Expr(i):
         ## Expr : Term Expr_
         i, r0 = Term(i)                    # Expr : Term . Expr_
         i, r1 = Expr_(i)                   # Expr : Term Expr_ .
-
-        print r0, r1
         return i, collapse(r0, r1)
 
     def Expr_(i):
@@ -76,8 +97,6 @@ def parse(s):
         ## Term : Factor Term_
         i, r0 = Factor(i)                  # Term : Factor . Term_
         i, r1 = Term_(i)                   # Term : Factor Term_ .
-
-        print r0, r1
         return i, collapse(r0, r1)
 
     def Term_(i):
