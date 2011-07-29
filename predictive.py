@@ -7,6 +7,11 @@
 import lexer as lx
 from pytdpp.parser import BaseParser
 
+# This class subclasses the BaseParser from the Top Down Predictive Parser module. The
+# base class implements the actual parsing algorithm. You only need to write the LL(1)
+# grammar and parsing actions. In this case I interleaved some of the productions to
+# simplify the actions.
+
 class Parser(BaseParser):
 
     tokens = lx.TOKENSR
@@ -36,8 +41,7 @@ class Parser(BaseParser):
         Expr' : DASH Term Expr';
         Expr' : PLUS Term Expr';
         Term' : SLASH Factor Term';
-        Term' : STAR Factor Term';
-        ''')
+        Term' : STAR Factor Term';   ''')
     def Op(self, nt, op, b, extra):
         #print 'op>', op, b, extra
         if extra is not None:
