@@ -18,6 +18,10 @@ class token(object):
         self.value = value
     def __repr__(self):
         return str(self.value)
+    def __eq__(self, b):
+        if b is None: return False
+        if not isinstance(b, token): return False
+        return self.type == b.type and self.value == b.value
 
 def Lex(inpt):
     digits = list()
@@ -38,4 +42,4 @@ def Lex(inpt):
         elif not x.isdigit():
             raise Exception, 'Unknown character! %s' % (x)
     if digits:
-        yield token('NUMBER', int(''.join(digits)))
+        yield token(NUMBER, int(''.join(digits)))
