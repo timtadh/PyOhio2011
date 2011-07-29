@@ -4,6 +4,14 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
+import sys
+
+TOKENSR = (
+    'NUMBER', 'PLUS', 'DASH', 'STAR', 'SLASH', 'LPAREN', 'RPAREN',
+)
+TOKENS = dict((k, i) for i, k in enumerate(TOKENSR))
+sys.modules[__name__].__dict__.update(TOKENS)
+
 class token(object):
     def __init__(self, type, value):
         self.type = type
@@ -17,16 +25,16 @@ def Lex(inpt):
         if x.isdigit():
             digits.append(x)
         elif digits:
-            yield token('NUMBER', int(''.join(digits)))
+            yield token(NUMBER, int(''.join(digits)))
             digits = list()
 
         if x == ' ': continue
-        elif x == '+': yield token('PLUS', x)
-        elif x == '-': yield token('DASH', x)
-        elif x == '*': yield token('STAR', x)
-        elif x == '/': yield token('SLASH', x)
-        elif x == '(': yield token('LPAREN', x)
-        elif x == ')': yield token('RPAREN', x)
+        elif x == '+': yield token(PLUS, x)
+        elif x == '-': yield token(DASH, x)
+        elif x == '*': yield token(STAR, x)
+        elif x == '/': yield token(SLASH, x)
+        elif x == '(': yield token(LPAREN, x)
+        elif x == ')': yield token(RPAREN, x)
         elif not x.isdigit():
             raise Exception, 'Unknown character! %s' % (x)
     if digits:
