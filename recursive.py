@@ -10,6 +10,8 @@ from lexer import Lex
 def parse(s):
     s = [x for x in Lex(s)] ## s now holds the (token, attribute) "stream"
 
+    ## I suggest you start reading this code at "def Expr(...)"
+
 
     ## ## ## ## ## ## START EXPRESSION EVALUATOR ## ## ## ## ## ##
     def evalop(op, a, b):
@@ -41,62 +43,75 @@ def parse(s):
 
 
     ## ## ## ## ## ## START PARSER ## ## ## ## ## ##
+
+    # Notes on the construction of the parser.
+
     def Expr(i):
-        i, r0 = Term(i)
-        i, r1 = Expr_(i)
+        ## Expr : Term Expr_
+        i, r0 = Term(i)                    # Expr : Term . Expr_
+        i, r1 = Expr_(i)                   # Expr : Term Expr_ .
 
         print r0, r1
         return i, collapse(r0, r1)
 
     def Expr_(i):
+        ## Expr_ : PLUS Term Expr_
+        ## Expr_ : DASH Term Expr_
+        ## Expr_ : e (the empty string)
         if i >= len(s): return i, None
         a = s[i]
-        if a.type == lx.PLUS:
+        if a.type == lx.PLUS:              # Expr_ : PLUS . Term Expr_
             i += 1
             op = '+'
-        elif a.type == lx.DASH:
+        elif a.type == lx.DASH:            # Expr_ : DASH . Term Expr_
             i += 1
             op = '-'
-        else:
+        else:                              # Expr_ : e .
             return i, None
-        i, b = Term(i)
-        i, extra = Expr_(i)
+        i, b = Term(i)                     # Expr_ : (PLUS|DASH) Term . Expr_
+        i, extra = Expr_(i)                # Expr_ : (PLUS|DASH) Term Expr_ .
         return i, accumulate(op, b, extra)
 
     def Term(i):
-        i, r0 = Factor(i)
-        i, r1 = Term_(i)
+        ## Term : Factor Term_
+        i, r0 = Factor(i)                  # Term : Factor . Term_
+        i, r1 = Term_(i)                   # Term : Factor Term_ .
 
         print r0, r1
         return i, collapse(r0, r1)
 
     def Term_(i):
+        ## Term_ : STAR Factor Term_
+        ## Term_ : SLASH Factor Term_
+        ## Term_ : e (the empty string)
         if i >= len(s): return i, None
         a = s[i]
-        if a.type == lx.STAR:
+        if a.type == lx.STAR:              # Term_ : STAR . Factor Term_
             i += 1
             op = '*'
-        elif a.type == lx.SLASH:
+        elif a.type == lx.SLASH:           # Term_ : SLASH . Factor Term_
             i += 1
             op = '/'
-        else:
+        else:                              # Term_ : e .
             return i, None
-        i, b = Factor(i)
-        i, extra = Term_(i)
+        i, b = Factor(i)                   # Term_ : (STAR|SLASH) Factor . Term_
+        i, extra = Term_(i)                # Term_ : (STAR|SLASH) Factor Term_ .
         return i, accumulate(op, b, extra)
 
     def Factor(i):
+        ## Factor : NUMBER
+        ## Factor : LPAREN Expr RPAREN
         a = s[i]
-        if a.type == lx.NUMBER:
+        if a.type == lx.NUMBER:            # Factor : NUMBER .
             i += 1
             r = a.value
-        elif a.type == lx.LPAREN:
+        elif a.type == lx.LPAREN:          # Factor : LPAREN . Expr RPAREN
             i += 1
-            i, r = Expr(i)
+            i, r = Expr(i)                 # Factor : LPAREN Expr . RPAREN
             a = s[i]
             if a.type != lx.RPAREN:
                 raise SyntaxError
-            i += 1
+            i += 1                         # Factor : LPAREN Expr RPAREN .
         else:
             raise SyntaxError, "Unexpected token %s" % a
         return i, r
