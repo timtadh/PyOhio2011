@@ -9,7 +9,7 @@ import sys
 TOKENSR = (
     'NUMBER', 'PLUS', 'DASH', 'STAR', 'SLASH', 'LPAREN', 'RPAREN',
 )
-TOKENS = dict((k, i) for i, k in enumerate(TOKENSR))
+TOKENS = dict((k, k) for i, k in enumerate(TOKENSR))
 sys.modules[__name__].__dict__.update(TOKENS)
 
 class token(object):
