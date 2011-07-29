@@ -26,12 +26,9 @@ class Parser(BaseParser):
     @BaseParser.production("Term : Factor Term'")
     @BaseParser.production("Expr : Term Expr'")
     def ExprTerm(self, expr_, b, extra):
-        print 'et>', b, extra
         if extra is not None:
             b = self.evalop(extra[0], b, extra[1])
-            #print ' '*4, b
             if len(extra) == 3:
-                #print ' '*4, extra[2]
                 return self.ExprTerm(None, b, extra[2])
         return b
 
@@ -42,7 +39,7 @@ class Parser(BaseParser):
         Term' : STAR Factor Term';
         ''')
     def Op(self, nt, op, b, extra):
-        print 'op>', op, b, extra
+        #print 'op>', op, b, extra
         if extra is not None:
             if len(extra) == 2:
                 return op.value, b, (extra[0], extra[1])
@@ -60,6 +57,8 @@ class Parser(BaseParser):
     @BaseParser.production("Factor : LPAREN Expr RPAREN")
     def Factor2(self, factor, lparen, expr, rparen):
         return expr
+
+parse = Parser(lx.Lex).parse
 
 if __name__ == '__main__':
     print Parser.tokens
