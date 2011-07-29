@@ -69,6 +69,11 @@ def parse(s, debug=False):
     #
     #      #      #      #      #      #      #      #      #      #      #
 
+    ## NB. Sorry about the gratuitous print statement messing up the
+    ## readability of the code. I wanted to make the execution of the
+    ## parser understandable at run time. Go to an eariler version of
+    ## this file to see the "clean" version.
+
     def Expr(i):
         ## Expr : Term Expr_
         if debug: print 'Expr : . Term Expr_'
