@@ -67,7 +67,7 @@ def parse(s, debug=False):
     #         @r = the return value to be passed to the parent.
     #
     # This parser does not produce an AST or any intermediate language.
-    # Instead, it evaluates the language in place a produces the result
+    # Instead, it evaluates the language in place and produces the result
     # of the arithmetic expression. It is not necessary to understand
     # this process, but the interested can read the code contained in
     # `evalop`, `collapse`, and `accumulate`.
