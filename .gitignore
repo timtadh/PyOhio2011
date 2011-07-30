@@ -1,4 +1,5 @@
 *.pyc
 *.png
 lalr_tab.py
+env
 
