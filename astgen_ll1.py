@@ -4,6 +4,11 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
+'''
+Generates Abstract Syntax Trees (ASTs) using PyTDPP as the parser engine. The AST
+generated is from the LL(1) grammar.
+'''
+
 import sys
 
 import lexer as lx
@@ -12,10 +17,24 @@ from ast import Node
 
 # This class subclasses the BaseParser from the Top Down Predictive Parser module. The
 # base class implements the actual parsing algorithm. You only need to write the LL(1)
-# grammar and parsing actions. In this case I interleaved some of the productions to
-# simplify the actions.
+# grammar and parsing actions.
 
 class Parser(BaseParser):
+    '''Parses the LL(1) arithmetic grammar and generates an AST.
+
+    Usage
+    =====
+
+    using the parse function (at the module level).
+
+        ast = parse(expr)
+
+    using this class directly.
+
+        import lexer as lx
+        parser = Parser(lx.Lex)
+        ast = parser.parse(expr)
+    '''
 
     tokens = lx.TOKENSR
 
@@ -32,6 +51,11 @@ class Parser(BaseParser):
     Factor : DASH NUMBER;
     Factor : LPAREN Expr RPAREN; ''')
     def Start(self, nt, *kids):
+        '''
+        The production action for all productions in the grammar. The AST
+        which is built is actually the same as the Parse Tree. Therefore,
+        it is easy to have a generic action for all of the grammar rules.
+        '''
         n = Node(nt.sym)
         for kid in kids:
             if isinstance(kid, Node): n.addkid(kid)
