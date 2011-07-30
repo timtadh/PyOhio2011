@@ -5,8 +5,8 @@
 #For licensing see the LICENSE file in the top level directory.
 
 '''
-Generates Abstract Syntax Trees (ASTs) using a recursive descent parser. The AST
-generated is from the LALR grammar.
+A copy of recursive.py with a lot of debug information added. The debug information
+should indicate how the parser works.
 '''
 
 import lexer as lx
