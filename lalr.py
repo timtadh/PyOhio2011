@@ -33,36 +33,50 @@ class Parser(object):
             c = self.table[c]
         return c
 
-    def p_Start(self, t):
-        '''
-        Expr : Expr PLUS Term
-        Expr : Expr DASH Term
-        Expr : Term
-        Term : Term STAR Factor
-        Term : Term SLASH Factor
-        Term : Factor
-        Factor : NUMBER
-        Factor : DASH NUMBER
-        Factor : LPAREN Expr RPAREN
-        '''
+    def p_Expr1(self, t):
+        'Expr : Expr PLUS Term'
+        t[0] = t[1] + t[3]
 
-        #Expr : Term Expr_
-        #Expr_ : PLUS Term Expr_
-        #Expr_ : DASH Term Expr_
-        #Expr_ :
-        #Term : Factor Term_
-        #Term_ : STAR Factor Term_
-        #Term_ : SLASH Factor Term_
-        #Term_ :
-        #Factor : NUMBER
-        #Factor : DASH NUMBER
-        #Factor : LPAREN Expr RPAREN
-        t[0] = [x for x in t[1:]]
-        print t[0]
+    def p_Expr2(self, t):
+        'Expr : Expr DASH Term'
+        t[0] = t[1] - t[3]
+
+    def p_Expr3(self, t):
+        'Expr : Term'
+        t[0] = t[1]
+
+    def p_Term1(self, t):
+        'Term : Term STAR Factor'
+        t[0] = t[1] * t[3]
+
+    def p_Term2(self, t):
+        'Term : Term SLASH Factor'
+        t[0] = t[1] / t[3]
+
+    def p_Term3(self, t):
+        'Term : Factor'
+        t[0] = t[1]
+
+    def p_Factor1(self, t):
+        'Factor : NUMBER '
+        t[0] = t[1]
+
+    def p_Factor2(self, t):
+        'Factor : DASH NUMBER'
+        t[0] = -1 * t[2]
+
+    def p_Factor3(self, t):
+        'Factor : LPAREN Expr RPAREN '
+        t[0] = t[2]
+
+    def p_error(self, t):
+        raise SyntaxError, "An error occured at %s" % str(t)
 
 parse = functools.partial(Parser().parse, lexer=Lex)
 
 if __name__ == '__main__':
     def test(expr):
         p = parse(expr)
-    test('(2+3)*4')
+        assert eval(expr) == p
+        print p
+    test('(-2+3)*4')
