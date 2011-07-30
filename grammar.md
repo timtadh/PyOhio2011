@@ -10,8 +10,8 @@ Tokens
     LPAREN  : \(
     RPAREN  : \)
 
-Productions
-===========
+LL(1) Grammar
+=============
 
     Expr : Term Expr';
     Expr' : PLUS Term Expr';
@@ -24,3 +24,16 @@ Productions
     Factor : NUMBER;
     Factor : DASH NUMBER;
     Factor : LPAREN Expr RPAREN;
+
+LALR Grammar
+============
+
+    Expr : Expr PLUS Term
+    Expr : Expr DASH Term
+    Expr : Term
+    Term : Term STAR Factor
+    Term : Term SLASH Factor
+    Term : Factor
+    Factor : NUMBER
+    Factor : DASH NUMBER
+    Factor : LPAREN Expr RPAREN

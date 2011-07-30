@@ -4,6 +4,7 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
+import functools
 
 from ply import yacc
 from lexer import TOKENSR, Lex
@@ -34,24 +35,34 @@ class Parser(object):
 
     def p_Start(self, t):
         '''
-        Expr : Term Expr_
-        Expr_ : PLUS Term Expr_
-        Expr_ : DASH Term Expr_
-        Expr_ :
-        Term : Factor Term_
-        Term_ : STAR Factor Term_
-        Term_ : SLASH Factor Term_
-        Term_ :
+        Expr : Expr PLUS Term
+        Expr : Expr DASH Term
+        Expr : Term
+        Term : Term STAR Factor
+        Term : Term SLASH Factor
+        Term : Factor
         Factor : NUMBER
         Factor : DASH NUMBER
         Factor : LPAREN Expr RPAREN
         '''
+
+        #Expr : Term Expr_
+        #Expr_ : PLUS Term Expr_
+        #Expr_ : DASH Term Expr_
+        #Expr_ :
+        #Term : Factor Term_
+        #Term_ : STAR Factor Term_
+        #Term_ : SLASH Factor Term_
+        #Term_ :
+        #Factor : NUMBER
+        #Factor : DASH NUMBER
+        #Factor : LPAREN Expr RPAREN
         t[0] = [x for x in t[1:]]
         print t[0]
 
+parse = functools.partial(Parser().parse, lexer=Lex)
 
 if __name__ == '__main__':
-    parser = Parser()
     def test(expr):
-        p = parser.parse(expr, lexer=Lex)
+        p = parse(expr)
     test('(2+3)*4')
