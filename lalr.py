@@ -4,6 +4,11 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
+'''
+Generates Abstract Syntax Trees (ASTs) using PLY as the parser engine. The AST
+generated is from the LALR grammar.
+'''
+
 import functools
 
 from ply import yacc

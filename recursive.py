@@ -4,6 +4,11 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
+'''
+Generates Abstract Syntax Trees (ASTs) using a recursive descent parser. The AST
+generated is from the LALR grammar.
+'''
+
 import lexer as lx
 from lexer import Lex
 
