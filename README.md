@@ -4,8 +4,8 @@ PyOhio 2011 Example Code for "Python, Parsing, and You"
 By Tim Henderson (tim.tadh@gmail.com)
 
 
-How To Use This Repositories
-============================
+How To Use This Repository
+==========================
 
 There are 3 branches in this repository. The top level branch `master` contains
 all of the "answers." It has complete implementations for all of the examples
