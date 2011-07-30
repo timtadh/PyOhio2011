@@ -144,12 +144,23 @@ def parse(s, debug=False):
 
     def Factor(i):
         ## Factor : NUMBER
+        ## Factor : DASH NUMBER
         ## Factor : LPAREN Expr RPAREN
         a = s[i]
         if a.type == lx.NUMBER:            # Factor : NUMBER .
             i += 1
             r = a.value
             if debug: print 'Factor : NUMBER .'
+        elif a.type == lx.DASH:            # Factor : DASH . NUMBER
+            if debug: print 'Factor : DASH . NUMBER'
+            i += 1
+            a = s[i]
+            if a.type == lx.NUMBER:        # Factor : DASH NUMBER .
+                if debug: print 'Factor : DASH NUMBER .'
+                i += 1
+                r = -1 * a.value
+            else:
+                raise SyntaxError
         elif a.type == lx.LPAREN:          # Factor : LPAREN . Expr RPAREN
             i += 1
             if debug: print 'Factor : LPAREN . Expr RPAREN'

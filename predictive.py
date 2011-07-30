@@ -58,8 +58,12 @@ class Parser(BaseParser):
     def Factor1(self, factor, number):
         return number.value
 
+    @BaseParser.production("Factor : DASH NUMBER")
+    def Factor2(self, factor, dash, number):
+        return -1 * number.value
+
     @BaseParser.production("Factor : LPAREN Expr RPAREN")
-    def Factor2(self, factor, lparen, expr, rparen):
+    def Factor3(self, factor, lparen, expr, rparen):
         return expr
 
 parse = Parser(lx.Lex).parse

@@ -22,4 +22,5 @@ Productions
     Term' : SLASH Factor Term';
     Term' : e;
     Factor : NUMBER;
+    Factor : DASH NUMBER;
     Factor : LPAREN Expr RPAREN;
