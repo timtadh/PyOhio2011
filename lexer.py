@@ -4,7 +4,7 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
-import sys
+import sys, functools
 
 TOKENSR = (
     'NUMBER', 'PLUS', 'DASH', 'STAR', 'SLASH', 'LPAREN', 'RPAREN',
@@ -45,3 +45,25 @@ def Lex(inpt):
             raise Exception, 'Unknown character! %s' % (x)
     if digits:
         yield token(NUMBER, int(''.join(digits)))
+
+## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+##
+## THIS HACKERY IS NOT ADVISED
+##
+## I wrote the following to emulate PLY lexer
+## you should just use PLY's lexer instead.
+##
+## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+
+def __input(inpt):
+    Lex.c = Lex(inpt)
+
+def __token():
+    if not hasattr(Lex, 'c'): return
+    try:
+        return Lex.c.next()
+    except StopIteration:
+        return
+
+Lex.input = __input
+Lex.token = __token
