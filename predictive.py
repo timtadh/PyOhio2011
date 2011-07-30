@@ -4,6 +4,12 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
+'''
+Implements an evaluator for the arithmetic language defined in grammar.md. It uses
+PyTDPP as the parser engine.
+'''
+
+
 import lexer as lx
 from pytdpp.parser import BaseParser
 
