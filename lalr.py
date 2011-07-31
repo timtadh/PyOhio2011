@@ -27,16 +27,8 @@ class Parser(object):
     def __new__(cls, **kwargs):
         ## Does magic to allow PLY to do its thing.
         self = super(Parser, cls).__new__(cls)
-        self.table = dict()
-        self.loc = list()
         self.yacc = yacc.yacc(module=self, tabmodule="lalr_tab", debug=0, **kwargs)
         return self.yacc
-
-    def get_table(self):
-        c = self.table
-        for s in self.loc:
-            c = self.table[c]
-        return c
 
     def p_Expr1(self, t):
         'Expr : Expr PLUS Term'
