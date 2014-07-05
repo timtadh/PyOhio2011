@@ -5,8 +5,7 @@
 #For licensing see the LICENSE file in the top level directory.
 
 '''
-Generates Abstract Syntax Trees (ASTs) using a recursive descent parser. The AST
-generated is from the LALR grammar.
+Evaluates a simple arithmetic language using a recursive descent parser.
 '''
 
 import lexer as lx
